@@ -9,6 +9,7 @@ normalised SPDX licence id into an auditable :class:`SymbolClassification`.
 
 from __future__ import annotations
 
+import dataclasses
 import importlib.resources
 from dataclasses import dataclass
 from pathlib import Path
@@ -48,6 +49,23 @@ class Policy:
     @property
     def unresolved_posture(self) -> Posture:
         return self.categories[self.unresolved_category].posture
+
+    def with_unresolved_posture(self, posture: Posture) -> Policy:
+        """Return a copy of this policy with the unresolved category's posture set.
+
+        Used by the ``--strict-unresolved`` option to escalate unknowns to
+        ``blocked`` without editing the policy file.
+        """
+        current = self.categories[self.unresolved_category]
+        updated = Category(
+            key=current.key,
+            description=current.description,
+            posture=posture,
+            obligations=current.obligations,
+        )
+        new_categories = dict(self.categories)
+        new_categories[self.unresolved_category] = updated
+        return dataclasses.replace(self, categories=new_categories)
 
     def category_for_expression(self, expression: str) -> str | None:
         """Return the category for a full SPDX expression, if a rule exists."""

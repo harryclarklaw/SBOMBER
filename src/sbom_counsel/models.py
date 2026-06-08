@@ -44,7 +44,7 @@ def better(a: Posture, b: Posture) -> Posture:
 
 # --- Ingestion model ---------------------------------------------------------
 
-SbomFormat = Literal["cyclonedx", "spdx"]
+SbomFormat = Literal["cyclonedx", "spdx", "cargo-metadata", "cargo-deny"]
 
 # Where a licence statement was found, in order of authority.
 LicenseSource = Literal["concluded", "declared"]
