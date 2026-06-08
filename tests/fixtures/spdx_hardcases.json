@@ -1,0 +1,95 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "acme-service-sbom",
+  "documentNamespace": "https://example.com/acme-service/sbom",
+  "creationInfo": {
+    "created": "2026-02-01T12:00:00Z",
+    "creators": ["Tool: example-sbom-generator-1.0"]
+  },
+  "documentDescribes": ["SPDXRef-Package-root"],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-AcmeCustom",
+      "name": "Acme Custom License",
+      "extractedText": "Acme Custom License: internal use permitted. (embedded test text)"
+    }
+  ],
+  "packages": [
+    {
+      "name": "acme-service",
+      "SPDXID": "SPDXRef-Package-root",
+      "versionInfo": "2.0.0",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0"
+    },
+    {
+      "name": "mit-pkg",
+      "SPDXID": "SPDXRef-Package-mit",
+      "versionInfo": "1.2.3",
+      "supplier": "Organization: MIT Pkg Authors",
+      "originator": "Person: Jane Doe",
+      "copyrightText": "Copyright 2024 MIT Pkg Authors",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "homepage": "https://example.com/mit-pkg",
+      "checksums": [{ "algorithm": "SHA256", "checksumValue": "bbbb2222" }],
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:pypi/mit-pkg@1.2.3"
+        }
+      ]
+    },
+    {
+      "name": "gpl-pkg",
+      "SPDXID": "SPDXRef-Package-gpl",
+      "versionInfo": "4.0",
+      "supplier": "NOASSERTION",
+      "licenseConcluded": "GPL-3.0-only",
+      "licenseDeclared": "GPL-3.0-only"
+    },
+    {
+      "name": "fallback-pkg",
+      "SPDXID": "SPDXRef-Package-fallback",
+      "versionInfo": "0.9.0",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "BSD-3-Clause"
+    },
+    {
+      "name": "none-pkg",
+      "SPDXID": "SPDXRef-Package-none",
+      "versionInfo": "1.0.0",
+      "licenseConcluded": "NONE",
+      "licenseDeclared": "NOASSERTION"
+    },
+    {
+      "name": "custom-pkg",
+      "SPDXID": "SPDXRef-Package-custom",
+      "versionInfo": "5.5.5",
+      "licenseConcluded": "LicenseRef-AcmeCustom",
+      "licenseDeclared": "LicenseRef-AcmeCustom"
+    },
+    {
+      "name": "nolicense-pkg",
+      "SPDXID": "SPDXRef-Package-nolicense",
+      "versionInfo": "3.1.4"
+    },
+    {
+      "name": "choice-pkg",
+      "SPDXID": "SPDXRef-Package-choice",
+      "versionInfo": "1.0.0",
+      "licenseConcluded": "MIT OR GPL-2.0-only",
+      "licenseDeclared": "MIT OR GPL-2.0-only"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-root"
+    }
+  ]
+}
