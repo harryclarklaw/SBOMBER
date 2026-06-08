@@ -70,7 +70,7 @@ def _handle_errors(func: Callable[..., Any]) -> Callable[..., Any]:
             raise SystemExit(int(err.exit_code)) from None
         except (click.ClickException, click.exceptions.Exit, SystemExit):
             raise
-        except Exception as err:  # noqa: BLE001 - top-level safety net
+        except Exception as err:
             if show_traceback:
                 raise
             click.secho(f"internal error: {err}", fg="red", err=True)

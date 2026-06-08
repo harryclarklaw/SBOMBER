@@ -19,7 +19,7 @@ import yaml
 
 from ..errors import ConfigError
 from ..licensing import normalize_key
-from ..models import ALL_POSTURES, Posture, PolicyMeta, SymbolClassification
+from ..models import ALL_POSTURES, PolicyMeta, Posture, SymbolClassification
 
 _DATA_PACKAGE = "sbom_counsel.data"
 _DEFAULT_POLICY_FILE = "default_policy.yaml"
@@ -141,7 +141,7 @@ def _coerce_posture(value: Any, where: str, source: str) -> Posture:
             f"Invalid posture {value!r} for {where}; must be one of: {allowed}.",
             hint=f"Edit {where} in {source}.",
         )
-    return value  # type: ignore[return-value]
+    return value
 
 
 def _coerce_str_list(value: Any, where: str, source: str) -> tuple[str, ...]:

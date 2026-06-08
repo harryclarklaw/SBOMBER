@@ -100,7 +100,7 @@ def test_collect_sbom_with_injected_runner(tmp_path: Path) -> None:
 
 
 def test_collect_sbom_requires_cargo_toml(tmp_path: Path) -> None:
-    with pytest.raises(EnvironmentToolError, match="Cargo.toml"):
+    with pytest.raises(EnvironmentToolError, match=r"Cargo\.toml"):
         collect_sbom(tmp_path, tool="cargo-metadata", runner=lambda a, c: "{}")
 
 

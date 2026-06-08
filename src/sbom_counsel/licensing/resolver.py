@@ -144,8 +144,9 @@ def resolve(findings: Iterable[LicenseFinding]) -> Resolution:
 
     pending_reason = "no licence information found"
 
-    for source in ("concluded", "declared"):
-        group = by_source[source]  # type: ignore[index]
+    ordered_sources: tuple[LicenseSource, ...] = ("concluded", "declared")
+    for source in ordered_sources:
+        group = by_source[source]
         if not group:
             continue
 
@@ -162,7 +163,7 @@ def resolve(findings: Iterable[LicenseFinding]) -> Resolution:
             return Resolution(
                 normalized=None,
                 expression=None,
-                source=source,  # type: ignore[arg-type]
+                source=source,
                 unresolved=True,
                 unresolved_reason=(
                     f"licence statement could not be parsed as an SPDX expression: "
@@ -181,7 +182,7 @@ def resolve(findings: Iterable[LicenseFinding]) -> Resolution:
             return Resolution(
                 normalized=parsed.render(),
                 expression=parsed,
-                source=source,  # type: ignore[arg-type]
+                source=source,
                 unresolved=True,
                 unresolved_reason=reason,
                 symbols=symbols,
@@ -190,7 +191,7 @@ def resolve(findings: Iterable[LicenseFinding]) -> Resolution:
         return Resolution(
             normalized=parsed.render(),
             expression=parsed,
-            source=source,  # type: ignore[arg-type]
+            source=source,
             unresolved=False,
             unresolved_reason=None,
             symbols=symbols,

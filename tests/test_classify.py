@@ -16,7 +16,7 @@ from sbom_counsel.policy import (
 
 
 @pytest.fixture
-def policy():  # type: ignore[no-untyped-def]
+def policy():
     return load_default_policy()
 
 
@@ -87,7 +87,8 @@ def test_noassertion_is_unresolved_review(policy) -> None:
 
 
 def test_non_spdx_identifier_is_unresolved(policy) -> None:
-    r = classify_component(comp("a", LicenseFinding("Weird Custom 1.0", "name", "declared")), policy)
+    finding = LicenseFinding("Weird Custom 1.0", "name", "declared")
+    r = classify_component(comp("a", finding), policy)
     assert r.unresolved
     assert r.base_posture == "review"
 

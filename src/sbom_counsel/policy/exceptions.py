@@ -70,7 +70,10 @@ def _require_str(value: Any, field: str, index: int, source: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ConfigError(
             f"Exception #{index + 1} in {source} is missing a non-empty '{field}'.",
-            hint="Each exception requires component, version, posture, justification, owner, and date.",
+            hint=(
+                "Each exception requires component, version, posture, justification, "
+                "owner, and date."
+            ),
         )
     return value.strip()
 
@@ -120,7 +123,7 @@ def _parse_rule(body: Any, index: int, source: str) -> ExceptionRule:
     return ExceptionRule(
         component=component,
         version=version,
-        posture=posture_value,  # type: ignore[arg-type]
+        posture=posture_value,
         justification=justification,
         owner=owner,
         date=date_str,
@@ -139,10 +142,7 @@ def load_exceptions_from_text(text: str, source: str) -> ExceptionSet:
 
     if data is None:
         return ExceptionSet(rules=(), source_path=source)
-    if isinstance(data, dict):
-        items = data.get("exceptions")
-    else:
-        items = data
+    items = data.get("exceptions") if isinstance(data, dict) else data
     if items is None:
         return ExceptionSet(rules=(), source_path=source)
     if not isinstance(items, list):

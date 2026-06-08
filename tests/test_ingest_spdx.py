@@ -7,7 +7,7 @@ from pathlib import Path
 from sbom_counsel.ingest import load_sbom
 
 
-def _by_name(sbom):  # type: ignore[no-untyped-def]
+def _by_name(sbom):
     return {c.name: c for c in sbom.components}
 
 

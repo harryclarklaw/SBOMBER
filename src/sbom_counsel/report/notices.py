@@ -14,7 +14,7 @@ The tool never invents or paraphrases licence text.
 from __future__ import annotations
 
 import importlib.resources
-from functools import lru_cache
+from functools import cache
 
 from .. import APP_NAME
 from ..models import AnalysisResult, ComponentResult
@@ -30,7 +30,7 @@ _NOTICES_HEADER = (
 )
 
 
-@lru_cache(maxsize=None)
+@cache
 def bundled_license_text(license_id: str) -> str | None:
     """Return the bundled verbatim licence text for an SPDX id, if available."""
     resource = importlib.resources.files(_TEXTS_PACKAGE).joinpath(f"{license_id}.txt")
@@ -94,7 +94,10 @@ def _spdx_pointer(license_id: str) -> str:
 
 def _sorted_results(result: AnalysisResult) -> tuple[ComponentResult, ...]:
     return tuple(
-        sorted(result.results, key=lambda r: (r.component.name.casefold(), r.component.display_version))
+        sorted(
+            result.results,
+            key=lambda r: (r.component.name.casefold(), r.component.display_version),
+        )
     )
 
 
@@ -215,8 +218,8 @@ def render_notices_markdown(result: AnalysisResult) -> str:
     if embedded:
         add("## Licence texts provided in the SBOM")
         add("")
-        for component, label, text in embedded:
-            add(f"### {component} — {label}")
+        for comp_name, label, text in embedded:
+            add(f"### {comp_name} — {label}")
             add("")
             add("```")
             add(text)

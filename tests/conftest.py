@@ -17,7 +17,8 @@ def fixtures_dir() -> Path:
 
 
 def load_fixture(name: str) -> dict[str, Any]:
-    return json.loads((FIXTURES / name).read_text(encoding="utf-8"))
+    data: dict[str, Any] = json.loads((FIXTURES / name).read_text(encoding="utf-8"))
+    return data
 
 
 @pytest.fixture

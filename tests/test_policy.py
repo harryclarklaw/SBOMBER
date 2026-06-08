@@ -66,9 +66,7 @@ def test_recognised_but_unmapped_licence_is_conservative() -> None:
 
 def test_expression_rule_lookup() -> None:
     p = load_default_policy()
-    assert (
-        p.category_for_expression("GPL-2.0-only WITH Classpath-exception-2.0") == "weak_copyleft"
-    )
+    assert p.category_for_expression("GPL-2.0-only WITH Classpath-exception-2.0") == "weak_copyleft"
     assert p.category_for_expression("MIT") is None
 
 
@@ -93,7 +91,8 @@ def test_deprecated_keys_are_normalised_on_load() -> None:
     [
         ("not a mapping", "mapping at the top level"),
         (
-            "categories: {permissive: {posture: maybe}}\ndefaults: {unresolved_category: permissive}",
+            "categories: {permissive: {posture: maybe}}\n"
+            "defaults: {unresolved_category: permissive}",
             "Invalid posture",
         ),
         (

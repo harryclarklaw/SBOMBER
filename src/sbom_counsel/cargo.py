@@ -86,8 +86,8 @@ def components_from_cargo_metadata(metadata: dict[str, Any]) -> tuple[Component,
         findings: tuple[LicenseFinding, ...] = ()
         if isinstance(license_expr, str) and license_expr.strip():
             # cargo uses '/' as a historical separator for OR; normalise it.
-            normalised = license_expr.replace("/", " OR ")
-            findings = (LicenseFinding(raw=normalised.strip(), kind="expression", source="declared"),)
+            normalised = license_expr.replace("/", " OR ").strip()
+            findings = (LicenseFinding(raw=normalised, kind="expression", source="declared"),)
         repository = package.get("repository")
         purl = f"pkg:cargo/{name}@{version}" if version else f"pkg:cargo/{name}"
         components.append(

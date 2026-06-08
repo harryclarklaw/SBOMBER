@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any
 
 from click.testing import CliRunner
 
@@ -13,7 +14,12 @@ CLEAN_SBOM = {
     "bomFormat": "CycloneDX",
     "specVersion": "1.5",
     "components": [
-        {"type": "library", "name": "a", "version": "1.0.0", "licenses": [{"license": {"id": "MIT"}}]},
+        {
+            "type": "library",
+            "name": "a",
+            "version": "1.0.0",
+            "licenses": [{"license": {"id": "MIT"}}],
+        },
         {
             "type": "library",
             "name": "b",
@@ -24,7 +30,7 @@ CLEAN_SBOM = {
 }
 
 
-def _write(path: Path, data: dict) -> Path:
+def _write(path: Path, data: dict[str, Any]) -> Path:
     path.write_text(json.dumps(data), encoding="utf-8")
     return path
 
@@ -46,9 +52,7 @@ def test_analyze_writes_all_outputs(tmp_path: Path) -> None:
 
 def test_clean_sbom_gate_passes(tmp_path: Path) -> None:
     sbom = _write(tmp_path / "clean.cdx.json", CLEAN_SBOM)
-    result = CliRunner().invoke(
-        main, ["analyze", str(sbom), "-o", str(tmp_path / "r"), "--gate"]
-    )
+    result = CliRunner().invoke(main, ["analyze", str(sbom), "-o", str(tmp_path / "r"), "--gate"])
     assert result.exit_code == 0
     assert "passed" in result.output
 
@@ -82,9 +86,7 @@ def test_gate_fail_on_review(tmp_path: Path) -> None:
 def test_print_json_to_stdout_writes_no_files(tmp_path: Path) -> None:
     sbom = _write(tmp_path / "clean.cdx.json", CLEAN_SBOM)
     out = tmp_path / "should-not-exist"
-    result = CliRunner().invoke(
-        main, ["analyze", str(sbom), "-o", str(out), "--print", "json"]
-    )
+    result = CliRunner().invoke(main, ["analyze", str(sbom), "-o", str(out), "--print", "json"])
     assert result.exit_code == 0
     parsed = json.loads(result.output)
     assert parsed["summary"]["overall_posture"] == "allowed"
@@ -111,9 +113,7 @@ def test_strict_unresolved_blocks(tmp_path: Path) -> None:
 def test_format_selection_writes_only_requested(tmp_path: Path) -> None:
     sbom = _write(tmp_path / "clean.cdx.json", CLEAN_SBOM)
     out = tmp_path / "report"
-    result = CliRunner().invoke(
-        main, ["analyze", str(sbom), "-o", str(out), "--format", "md"]
-    )
+    result = CliRunner().invoke(main, ["analyze", str(sbom), "-o", str(out), "--format", "md"])
     assert result.exit_code == 0
     assert (out / "report.md").is_file()
     assert not (out / "report.html").exists()

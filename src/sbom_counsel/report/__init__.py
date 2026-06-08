@@ -20,9 +20,7 @@ __all__ = [
 ]
 
 
-def render_all(
-    result: AnalysisResult, *, include_vulnerabilities: bool = False
-) -> dict[str, str]:
+def render_all(result: AnalysisResult, *, include_vulnerabilities: bool = False) -> dict[str, str]:
     """Render every output format and return a mapping of suffix -> content.
 
     Keys are: ``report.json``, ``report.md``, ``report.html``, ``notices.txt``,

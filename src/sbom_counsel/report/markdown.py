@@ -43,8 +43,10 @@ def render_markdown(data: dict[str, Any]) -> str:
 
     add("## Subject")
     add("")
-    add(f"- **SBOM:** {_esc(sbom['document_name'])} "
-        f"({sbom['format']} {sbom['spec_version']}, {sbom['component_count']} components)")
+    add(
+        f"- **SBOM:** {_esc(sbom['document_name'])} "
+        f"({sbom['format']} {sbom['spec_version']}, {sbom['component_count']} components)"
+    )
     if sbom["source_path"]:
         add(f"- **Source file:** {_esc(sbom['source_path'])}")
     if sbom["metadata_timestamp"]:
@@ -68,8 +70,10 @@ def render_markdown(data: dict[str, Any]) -> str:
     add(f"| Allowed | {counts['allowed']} |")
     add(f"| **Total** | **{counts['total']}** |")
     add("")
-    add(f"Of these, {counts['unresolved']} could not be resolved automatically, and "
-        f"{counts['exceptions_applied']} have a project exception applied.")
+    add(
+        f"Of these, {counts['unresolved']} could not be resolved automatically, and "
+        f"{counts['exceptions_applied']} have a project exception applied."
+    )
     add("")
     gate = summary["gate"]
     if gate["fail_on"]:
@@ -100,14 +104,18 @@ def render_markdown(data: dict[str, Any]) -> str:
     add("## Unresolved and unknown components")
     add("")
     if data["unresolved"]:
-        add("These components could not be resolved to a known licence and were given the "
-            "policy's conservative default. They need human attention before distribution.")
+        add(
+            "These components could not be resolved to a known licence and were given the "
+            "policy's conservative default. They need human attention before distribution."
+        )
         add("")
         add("| Component | Version | Posture | Reason |")
         add("| --- | --- | --- | --- |")
         for u in data["unresolved"]:
-            add(f"| {_esc(u['name'])} | {_esc(u['version'])} | {_esc(_posture(u['posture']))} "
-                f"| {_esc(u['reason'])} |")
+            add(
+                f"| {_esc(u['name'])} | {_esc(u['version'])} | {_esc(_posture(u['posture']))} "
+                f"| {_esc(u['reason'])} |"
+            )
     else:
         add("None. Every component resolved to a known licence.")
     add("")
@@ -116,8 +124,10 @@ def render_markdown(data: dict[str, Any]) -> str:
     add("## Obligations to satisfy before distribution")
     add("")
     if data["obligations"]:
-        add("The following obligations arise from the components above. Satisfying them is "
-            "necessary but not by itself sufficient; see the disclaimer.")
+        add(
+            "The following obligations arise from the components above. Satisfying them is "
+            "necessary but not by itself sufficient; see the disclaimer."
+        )
         add("")
         for item in data["obligations"]:
             components = ", ".join(item["components"])
@@ -134,9 +144,11 @@ def render_markdown(data: dict[str, Any]) -> str:
         add("| Component | Version | Override | Was | Justification | Owner | Date |")
         add("| --- | --- | --- | --- | --- | --- | --- |")
         for e in data["exceptions_applied"]:
+            override = _posture(e["override_posture"])
+            original = _posture(e["original_posture"])
             add(
                 f"| {_esc(e['component'])} | {_esc(e['version'])} | "
-                f"{_esc(_posture(e['override_posture']))} | {_esc(_posture(e['original_posture']))} "
+                f"{_esc(override)} | {_esc(original)} "
                 f"| {_esc(e['justification'])} | {_esc(e['owner'])} | {_esc(e['date'])} |"
             )
     else:
@@ -147,9 +159,11 @@ def render_markdown(data: dict[str, Any]) -> str:
     if "vulnerabilities" in data:
         add("## Vulnerabilities reported in the SBOM (informational)")
         add("")
-        add("This section reproduces vulnerability data already present in the SBOM. "
+        add(
+            "This section reproduces vulnerability data already present in the SBOM. "
             "It is not generated or verified by this tool and is separate from licence "
-            "analysis.")
+            "analysis."
+        )
         add("")
         if data["vulnerabilities"]:
             add("| Component | Version | ID | Severity | Source |")

@@ -17,12 +17,12 @@ from sbom_counsel.report.notices import (
 
 
 @pytest.fixture
-def cdx_result(cyclonedx_hardcases_path: Path):  # type: ignore[no-untyped-def]
+def cdx_result(cyclonedx_hardcases_path: Path):
     return analyze(load_sbom(cyclonedx_hardcases_path), load_default_policy())
 
 
 @pytest.fixture
-def spdx_result(spdx_hardcases_path: Path):  # type: ignore[no-untyped-def]
+def spdx_result(spdx_hardcases_path: Path):
     return analyze(load_sbom(spdx_hardcases_path), load_default_policy())
 
 

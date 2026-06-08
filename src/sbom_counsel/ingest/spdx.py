@@ -106,7 +106,8 @@ def _root_spdx_ids(data: dict[str, Any]) -> set[str]:
         for rel in relationships:
             if not isinstance(rel, dict):
                 continue
-            if rel.get("relationshipType") == "DESCRIBES" and rel.get("spdxElementId") == document_id:
+            is_describes = rel.get("relationshipType") == "DESCRIBES"
+            if is_describes and rel.get("spdxElementId") == document_id:
                 related = rel.get("relatedSpdxElement")
                 if isinstance(related, str):
                     roots.add(related)
@@ -117,8 +118,10 @@ def parse(data: dict[str, Any], source_path: str | None = None) -> Sbom:
     """Parse an SPDX JSON document into a :class:`Sbom`."""
     spec_version = str(data.get("spdxVersion", "unknown"))
     document_name = data.get("name") if isinstance(data.get("name"), str) else None
-    creation_info = data.get("creationInfo") if isinstance(data.get("creationInfo"), dict) else {}
-    timestamp = creation_info.get("created") if isinstance(creation_info.get("created"), str) else None
+    creation_info_raw = data.get("creationInfo")
+    creation_info = creation_info_raw if isinstance(creation_info_raw, dict) else {}
+    created = creation_info.get("created")
+    timestamp = created if isinstance(created, str) else None
 
     extracted = _extracted_license_texts(data)
     roots = _root_spdx_ids(data)

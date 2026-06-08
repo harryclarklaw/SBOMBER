@@ -153,7 +153,7 @@ def _combine_and(children: list[_NodeEval]) -> _NodeEval:
 
 def _combine_or(children: list[_NodeEval]) -> _NodeEval:
     # Choose the most permissive option, breaking ties by original order.
-    best_index, best = min(
+    _, best = min(
         enumerate(children), key=lambda pair: (POSTURE_SEVERITY[pair[1].posture], pair[0])
     )
     posture = best.posture
@@ -205,9 +205,9 @@ def classify_component(
             f"Unresolved: {reason}. Conservative default posture '{base_posture}' applied "
             f"(policy category '{policy.unresolved_category}')."
         )
-        classifications = (sc,)
-        obligations = sc.obligations
-        rule_ids = (sc.rule_id,)
+        classifications: tuple[SymbolClassification, ...] = (sc,)
+        obligations: tuple[str, ...] = sc.obligations
+        rule_ids: tuple[str, ...] = (sc.rule_id,)
         unresolved = True
     else:
         node_eval = _eval_node(resolution.expression, policy)

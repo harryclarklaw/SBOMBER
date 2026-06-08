@@ -1,6 +1,6 @@
 """Parse CycloneDX JSON SBOMs into the normalised model.
 
-Targets CycloneDX 1.4–1.6 (the current major line and its recent predecessors),
+Targets CycloneDX 1.4 to 1.6 (the current major line and its recent predecessors),
 reading only the fields the analysis needs. CycloneDX licence entries may be an
 SPDX id, a free-text name, or an SPDX ``expression``; from 1.5 each entry may
 carry an ``acknowledgement`` of ``declared`` or ``concluded``.
@@ -128,10 +128,10 @@ def _author(component: dict[str, Any]) -> str | None:
         return author.strip()
     authors = component.get("authors")
     if isinstance(authors, list):
-        names = [a.get("name") for a in authors if isinstance(a, dict)]
-        names = [n.strip() for n in names if isinstance(n, str) and n.strip()]
-        if names:
-            return ", ".join(names)
+        raw_names = [a.get("name") for a in authors if isinstance(a, dict)]
+        clean_names = [n.strip() for n in raw_names if isinstance(n, str) and n.strip()]
+        if clean_names:
+            return ", ".join(clean_names)
     return None
 
 
@@ -174,9 +174,9 @@ def _parse_vulnerabilities(data: dict[str, Any]) -> dict[str, list[Vulnerability
             id=vid,
             source=source if isinstance(source, str) else None,
             severity=severity,
-            description=vuln.get("description")
-            if isinstance(vuln.get("description"), str)
-            else None,
+            description=(
+                vuln.get("description") if isinstance(vuln.get("description"), str) else None
+            ),
         )
         affects = vuln.get("affects")
         if isinstance(affects, list):
@@ -189,7 +189,8 @@ def _parse_vulnerabilities(data: dict[str, Any]) -> dict[str, list[Vulnerability
 def parse(data: dict[str, Any], source_path: str | None = None) -> Sbom:
     """Parse a CycloneDX JSON document into a :class:`Sbom`."""
     spec_version = str(data.get("specVersion", "unknown"))
-    metadata = data.get("metadata") if isinstance(data.get("metadata"), dict) else {}
+    metadata_raw = data.get("metadata")
+    metadata = metadata_raw if isinstance(metadata_raw, dict) else {}
     timestamp = metadata.get("timestamp") if isinstance(metadata.get("timestamp"), str) else None
 
     document_name = None
@@ -225,9 +226,7 @@ def parse(data: dict[str, Any], source_path: str | None = None) -> Sbom:
                 author=_author(raw),
                 purl=purl.strip() if isinstance(purl, str) and purl.strip() else None,
                 bom_ref=bom_ref if isinstance(bom_ref, str) else None,
-                copyright=raw.get("copyright")
-                if isinstance(raw.get("copyright"), str)
-                else None,
+                copyright=raw.get("copyright") if isinstance(raw.get("copyright"), str) else None,
                 homepage=_homepage(raw),
                 licenses=findings,
                 embedded_texts=texts,

@@ -126,7 +126,10 @@ module = ["license_expression.*", "packageurl.*"]
 ignore_missing_imports = true
 
 [[tool.mypy.overrides]]
-# Tests favour readability over exhaustive annotation.
+# Tests favour readability over exhaustive annotation, but their bodies are still
+# type-checked (check_untyped_defs) so real mistakes are still caught.
 module = ["tests.*"]
 disallow_untyped_defs = false
+disallow_incomplete_defs = false
+disallow_untyped_calls = false
 check_untyped_defs = true

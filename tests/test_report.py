@@ -31,7 +31,7 @@ exceptions:
 
 
 @pytest.fixture
-def result(cyclonedx_hardcases_path: Path):  # type: ignore[no-untyped-def]
+def result(cyclonedx_hardcases_path: Path):
     sbom = load_sbom(cyclonedx_hardcases_path)
     policy = load_default_policy()
     exceptions = load_exceptions_from_text(EXCEPTIONS, "<exc>")
@@ -134,8 +134,6 @@ def test_vulnerabilities_only_when_requested(result) -> None:
     assert "vulnerabilities" in with_vulns
     # The fixture attaches CVE-2024-0001 to mit-lib.
     ids = {
-        entry["id"]
-        for comp in with_vulns["vulnerabilities"]
-        for entry in comp["vulnerabilities"]
+        entry["id"] for comp in with_vulns["vulnerabilities"] for entry in comp["vulnerabilities"]
     }
     assert "CVE-2024-0001" in ids

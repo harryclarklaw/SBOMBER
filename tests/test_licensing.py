@@ -54,22 +54,22 @@ def test_multiple_findings_joined_conjunctively() -> None:
     r = resolve([f("MIT"), f("ISC")])
     assert not r.unresolved
     # Order-independent, but both must appear and be AND-joined.
-    assert "AND" in r.normalized
+    assert r.normalized is not None and "AND" in r.normalized
     assert {s.key for s in r.symbols} == {"MIT", "ISC"}
 
 
 def test_noassertion_is_unresolved() -> None:
     r = resolve([f("NOASSERTION")])
     assert r.unresolved
-    assert "NOASSERTION" in r.unresolved_reason
+    assert "NOASSERTION" in (r.unresolved_reason or "")
     assert r.normalized is None
 
 
 def test_none_sentinel_is_unresolved_with_distinct_reason() -> None:
     r = resolve([f("NONE")])
     assert r.unresolved
-    assert "NONE" in r.unresolved_reason
-    assert "reserved" in r.unresolved_reason
+    assert "NONE" in (r.unresolved_reason or "")
+    assert "reserved" in (r.unresolved_reason or "")
 
 
 def test_noassertion_falls_back_to_declared() -> None:
@@ -83,7 +83,7 @@ def test_non_spdx_identifier_is_unresolved() -> None:
     r = resolve([f("LicenseRef-MyCorp-Proprietary")])
     assert r.unresolved
     assert r.has_unknown_symbol
-    assert "not recognised" in r.unresolved_reason
+    assert "not recognised" in (r.unresolved_reason or "")
 
 
 def test_no_findings_is_unresolved() -> None:
@@ -96,7 +96,7 @@ def test_no_findings_is_unresolved() -> None:
 def test_unparseable_expression_is_unresolved_not_raised() -> None:
     r = resolve([f("MIT AND AND OR")])
     assert r.unresolved
-    assert "could not be parsed" in r.unresolved_reason
+    assert "could not be parsed" in (r.unresolved_reason or "")
 
 
 def test_partial_unknown_in_expression_is_unresolved() -> None:
