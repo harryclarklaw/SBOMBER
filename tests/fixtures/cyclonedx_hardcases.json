@@ -1,0 +1,132 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:3e671687-0000-4000-8000-000000000001",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-01-15T10:00:00Z",
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:generic/acme-game@1.0.0",
+      "name": "acme-game",
+      "version": "1.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:cargo/mit-lib@1.0.0",
+      "name": "mit-lib",
+      "version": "1.0.0",
+      "supplier": { "name": "MIT Authors" },
+      "purl": "pkg:cargo/mit-lib@1.0.0",
+      "copyright": "Copyright (c) 2024 MIT Authors",
+      "hashes": [{ "alg": "SHA-256", "content": "aaaa1111" }],
+      "licenses": [{ "license": { "id": "MIT" } }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:cargo/apache-lib@2.1.0",
+      "name": "apache-lib",
+      "version": "2.1.0",
+      "supplier": { "name": "Apache Co" },
+      "purl": "pkg:cargo/apache-lib@2.1.0",
+      "externalReferences": [{ "type": "website", "url": "https://example.com/apache-lib" }],
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0",
+            "text": { "contentType": "text/plain", "content": "Apache License Version 2.0 (embedded test text)" }
+          }
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/dual-lib@0.5.0",
+      "name": "dual-lib",
+      "version": "0.5.0",
+      "purl": "pkg:npm/dual-lib@0.5.0",
+      "licenses": [{ "expression": "MIT OR Apache-2.0" }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/mixed-lib@3.0.0",
+      "name": "mixed-lib",
+      "version": "3.0.0",
+      "purl": "pkg:npm/mixed-lib@3.0.0",
+      "licenses": [{ "expression": "MIT AND GPL-3.0-only" }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:maven/com.example/classpath-lib@1.1.0",
+      "name": "classpath-lib",
+      "version": "1.1.0",
+      "purl": "pkg:maven/com.example/classpath-lib@1.1.0",
+      "licenses": [{ "expression": "GPL-2.0-only WITH Classpath-exception-2.0" }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:cargo/agpl-lib@1.0.0",
+      "name": "agpl-lib",
+      "version": "1.0.0",
+      "purl": "pkg:cargo/agpl-lib@1.0.0",
+      "licenses": [{ "license": { "id": "AGPL-3.0-only" } }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:generic/proprietary-lib@1.0.0",
+      "name": "proprietary-lib",
+      "version": "1.0.0",
+      "licenses": [{ "license": { "name": "MyCorp Proprietary License v3" } }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:generic/noassert-lib@1.0.0",
+      "name": "noassert-lib",
+      "version": "1.0.0",
+      "licenses": [{ "license": { "name": "NOASSERTION" } }]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:generic/nolicense-lib@1.0.0",
+      "name": "nolicense-lib",
+      "version": "1.0.0"
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/concluded-lib@1.0.0",
+      "name": "concluded-lib",
+      "version": "1.0.0",
+      "licenses": [
+        { "license": { "id": "GPL-3.0-only", "acknowledgement": "declared" } },
+        { "license": { "id": "MIT", "acknowledgement": "concluded" } }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/parent-lib@1.0.0",
+      "name": "parent-lib",
+      "version": "1.0.0",
+      "licenses": [{ "license": { "id": "ISC" } }],
+      "components": [
+        {
+          "type": "library",
+          "bom-ref": "pkg:npm/gpl-nested@2.0.0",
+          "name": "gpl-nested",
+          "version": "2.0.0",
+          "licenses": [{ "expression": "GPL-3.0-only" }]
+        }
+      ]
+    }
+  ],
+  "vulnerabilities": [
+    {
+      "id": "CVE-2024-0001",
+      "source": { "name": "NVD" },
+      "ratings": [{ "severity": "high" }],
+      "description": "Example vulnerability for testing the optional surfacing path.",
+      "affects": [{ "ref": "pkg:cargo/mit-lib@1.0.0" }]
+    }
+  ]
+}

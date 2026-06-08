@@ -1,0 +1,17 @@
+# Example exceptions file for nebula-server (examples/mixed-project.spdx.json).
+#
+# Each exception overrides the posture for one component and version, and must
+# carry a justification, an owner, and a date. Applied exceptions appear in the
+# report so the override is auditable. These examples are illustrative only and
+# are not legal advice.
+exceptions:
+  - component: media-codec
+    version: "5.1.2"
+    posture: allowed
+    justification: >-
+      Used only at build time to transcode game assets on the build machine. The
+      GPL-2.0 binary is not linked into, bundled with, or otherwise conveyed in
+      the shipped product, so the conveying obligation is not triggered. Confirmed
+      with the build pipeline owner; re-review if the build process changes.
+    owner: Jordan Counsel <legal@nebula.example>
+    date: 2026-05-21

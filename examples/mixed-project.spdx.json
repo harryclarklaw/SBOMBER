@@ -1,0 +1,117 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "nebula-server",
+  "documentNamespace": "https://example.com/nebula-server/sbom-1.0.0",
+  "creationInfo": {
+    "created": "2026-05-21T14:30:00Z",
+    "creators": ["Tool: example-sbom-generator-1.4", "Organization: Nebula Studios"]
+  },
+  "documentDescribes": ["SPDXRef-Package-nebula-server"],
+  "hasExtractedLicensingInfos": [
+    {
+      "licenseId": "LicenseRef-VendorEULA",
+      "name": "Acme Middleware End User Licence Agreement",
+      "extractedText": "ACME MIDDLEWARE EULA\n\nThis software is licensed, not sold. Redistribution in object form within a licensee's product is permitted under a paid commercial agreement. See your order form for terms. (Example text for demonstration only.)"
+    }
+  ],
+  "packages": [
+    {
+      "name": "nebula-server",
+      "SPDXID": "SPDXRef-Package-nebula-server",
+      "versionInfo": "1.0.0",
+      "licenseConcluded": "Apache-2.0",
+      "licenseDeclared": "Apache-2.0"
+    },
+    {
+      "name": "realtime-sync",
+      "SPDXID": "SPDXRef-Package-realtime-sync",
+      "versionInfo": "3.2.0",
+      "supplier": "Organization: Sync Systems Ltd",
+      "copyrightText": "Copyright (c) 2025 Sync Systems Ltd",
+      "licenseConcluded": "AGPL-3.0-only",
+      "licenseDeclared": "AGPL-3.0-only",
+      "homepage": "https://example.com/realtime-sync",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:cargo/realtime-sync@3.2.0"
+        }
+      ]
+    },
+    {
+      "name": "media-codec",
+      "SPDXID": "SPDXRef-Package-media-codec",
+      "versionInfo": "5.1.2",
+      "supplier": "Organization: Codec Project",
+      "copyrightText": "Copyright (c) 2024 Codec Project contributors",
+      "licenseConcluded": "GPL-2.0-only",
+      "licenseDeclared": "GPL-2.0-only",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:cargo/media-codec@5.1.2"
+        }
+      ]
+    },
+    {
+      "name": "ui-toolkit",
+      "SPDXID": "SPDXRef-Package-ui-toolkit",
+      "versionInfo": "2.0.0",
+      "supplier": "Organization: Toolkit Foundation",
+      "copyrightText": "Copyright (c) 2023 Toolkit Foundation",
+      "licenseConcluded": "MPL-2.0",
+      "licenseDeclared": "MPL-2.0"
+    },
+    {
+      "name": "crash-reporter",
+      "SPDXID": "SPDXRef-Package-crash-reporter",
+      "versionInfo": "4.4.1",
+      "supplier": "Organization: Acme Middleware Inc",
+      "copyrightText": "Copyright (c) 2025 Acme Middleware Inc",
+      "licenseConcluded": "LicenseRef-VendorEULA",
+      "licenseDeclared": "LicenseRef-VendorEULA"
+    },
+    {
+      "name": "telemetry-core",
+      "SPDXID": "SPDXRef-Package-telemetry-core",
+      "versionInfo": "0.9.7",
+      "licenseConcluded": "NOASSERTION",
+      "licenseDeclared": "NOASSERTION"
+    },
+    {
+      "name": "fast-json",
+      "SPDXID": "SPDXRef-Package-fast-json",
+      "versionInfo": "1.8.0",
+      "supplier": "Person: A. Developer",
+      "copyrightText": "Copyright (c) 2022 A. Developer",
+      "licenseConcluded": "MIT",
+      "licenseDeclared": "MIT",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9b74c9897bac770ffc029102a200c5de2c2b3f5f3f2a3b8b6f5a1a2c3d4e5f60"
+        }
+      ]
+    },
+    {
+      "name": "compress-rs",
+      "SPDXID": "SPDXRef-Package-compress-rs",
+      "versionInfo": "1.1.0",
+      "supplier": "Person: B. Maintainer",
+      "copyrightText": "Copyright (c) 2021 B. Maintainer",
+      "licenseConcluded": "Zlib",
+      "licenseDeclared": "Zlib"
+    }
+  ],
+  "relationships": [
+    {
+      "spdxElementId": "SPDXRef-DOCUMENT",
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-Package-nebula-server"
+    }
+  ]
+}

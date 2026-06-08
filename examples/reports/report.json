@@ -1,0 +1,397 @@
+{
+  "report_schema_version": "1.0",
+  "tool": {
+    "name": "sbom-counsel",
+    "version": "0.1.0",
+    "tagline": "Open-source licence-risk analysis for software bills of materials"
+  },
+  "policy": {
+    "name": "Default proprietary-distribution policy",
+    "version": "0.1.0",
+    "description": "Conservative default classification of common open-source licences for inclusion in a proprietary, commercially distributed product. Review with qualified counsel before relying on it.",
+    "source": "<bundled default_policy.yaml>"
+  },
+  "sbom": {
+    "format": "spdx",
+    "spec_version": "SPDX-2.3",
+    "document_name": "nebula-server",
+    "metadata_timestamp": "2026-05-21T14:30:00Z",
+    "source_path": "examples/mixed-project.spdx.json",
+    "component_count": 7
+  },
+  "summary": {
+    "overall_posture": "blocked",
+    "interpretation": "This component set is NOT ready to ship in a proprietary, commercially distributed product as it stands. 1 component(s) are blocked under the current policy and must be removed, replaced, isolated behind a reviewed boundary, or separately licensed. 3 require review.",
+    "counts": {
+      "total": 7,
+      "allowed": 3,
+      "review": 3,
+      "blocked": 1,
+      "unresolved": 2,
+      "exceptions_applied": 1
+    },
+    "gate": {
+      "fail_on": [],
+      "failed": false
+    }
+  },
+  "risk_register": [
+    {
+      "name": "realtime-sync",
+      "version": "3.2.0",
+      "purl": "pkg:cargo/realtime-sync@3.2.0",
+      "supplier": "Sync Systems Ltd",
+      "author": null,
+      "license_expression": "AGPL-3.0-only",
+      "license_source": "concluded",
+      "categories": [
+        "network_copyleft"
+      ],
+      "posture": "blocked",
+      "base_posture": "blocked",
+      "unresolved": false,
+      "unresolved_reason": null,
+      "obligations": [
+        "Providing the functionality over a network — including game servers and online services — triggers an obligation to offer complete corresponding source to those users.",
+        "To ship or operate proprietary, remove the component or obtain a separate commercial licence."
+      ],
+      "rules_applied": [
+        "license:AGPL-3.0-only->network_copyleft"
+      ],
+      "explanation": "Resolved SPDX expression 'AGPL-3.0-only' (from concluded licence information): AGPL-3.0-only classified as network_copyleft (blocked).",
+      "symbols": [
+        {
+          "license_key": "AGPL-3.0-only",
+          "known": true,
+          "category": "network_copyleft",
+          "posture": "blocked",
+          "rule_id": "license:AGPL-3.0-only->network_copyleft",
+          "note": "Network-use clause: users who interact with the software over a network must be offered the corresponding source. Especially relevant to hosted services and game servers."
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "crash-reporter",
+      "version": "4.4.1",
+      "purl": null,
+      "supplier": "Acme Middleware Inc",
+      "author": null,
+      "license_expression": "LicenseRef-VendorEULA",
+      "license_source": "concluded",
+      "categories": [
+        "unknown"
+      ],
+      "posture": "review",
+      "base_posture": "review",
+      "unresolved": true,
+      "unresolved_reason": "licence identifier(s) not recognised as SPDX: LicenseRef-VendorEULA",
+      "obligations": [
+        "Identify the actual licence (inspect the package or its source) and re-run, or have counsel review the component before distribution."
+      ],
+      "rules_applied": [
+        "default:unresolved"
+      ],
+      "explanation": "Unresolved: licence identifier(s) not recognised as SPDX: LicenseRef-VendorEULA. Conservative default posture 'review' applied (policy category 'unknown').",
+      "symbols": [
+        {
+          "license_key": "LicenseRef-VendorEULA",
+          "known": false,
+          "category": "unknown",
+          "posture": "review",
+          "rule_id": "default:unresolved",
+          "note": "licence identifier(s) not recognised as SPDX: LicenseRef-VendorEULA"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "telemetry-core",
+      "version": "0.9.7",
+      "purl": null,
+      "supplier": null,
+      "author": null,
+      "license_expression": null,
+      "license_source": null,
+      "categories": [
+        "unknown"
+      ],
+      "posture": "review",
+      "base_posture": "review",
+      "unresolved": true,
+      "unresolved_reason": "no licence information found",
+      "obligations": [
+        "Identify the actual licence (inspect the package or its source) and re-run, or have counsel review the component before distribution."
+      ],
+      "rules_applied": [
+        "default:unresolved"
+      ],
+      "explanation": "Unresolved: no licence information found. Conservative default posture 'review' applied (policy category 'unknown').",
+      "symbols": [
+        {
+          "license_key": "(no licence identified)",
+          "known": false,
+          "category": "unknown",
+          "posture": "review",
+          "rule_id": "default:unresolved",
+          "note": "no licence information found"
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "ui-toolkit",
+      "version": "2.0.0",
+      "purl": null,
+      "supplier": "Toolkit Foundation",
+      "author": null,
+      "license_expression": "MPL-2.0",
+      "license_source": "concluded",
+      "categories": [
+        "weak_copyleft"
+      ],
+      "posture": "review",
+      "base_posture": "review",
+      "unresolved": false,
+      "unresolved_reason": null,
+      "obligations": [
+        "Make the source of the covered component, including any modifications you made to it, available to recipients.",
+        "Keep the covered component separable and, where the licence requires it, replaceable by the recipient (assess static vs dynamic linking — this tool does not analyse linkage).",
+        "Retain notices and licence text."
+      ],
+      "rules_applied": [
+        "license:MPL-2.0->weak_copyleft"
+      ],
+      "explanation": "Resolved SPDX expression 'MPL-2.0' (from concluded licence information): MPL-2.0 classified as weak_copyleft (review).",
+      "symbols": [
+        {
+          "license_key": "MPL-2.0",
+          "known": true,
+          "category": "weak_copyleft",
+          "posture": "review",
+          "rule_id": "license:MPL-2.0->weak_copyleft",
+          "note": "File-level copyleft: modified MPL files must be offered under MPL-2.0, but the licence is designed to permit combination with proprietary code in a larger work."
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "compress-rs",
+      "version": "1.1.0",
+      "purl": null,
+      "supplier": "B. Maintainer",
+      "author": null,
+      "license_expression": "Zlib",
+      "license_source": "concluded",
+      "categories": [
+        "permissive"
+      ],
+      "posture": "allowed",
+      "base_posture": "allowed",
+      "unresolved": false,
+      "unresolved_reason": null,
+      "obligations": [
+        "Retain all copyright notices, licence text, and warranty disclaimers, and reproduce them in your product's third-party notices.",
+        "Attribute the component as its licence requires."
+      ],
+      "rules_applied": [
+        "license:Zlib->permissive"
+      ],
+      "explanation": "Resolved SPDX expression 'Zlib' (from concluded licence information): Zlib classified as permissive (allowed).",
+      "symbols": [
+        {
+          "license_key": "Zlib",
+          "known": true,
+          "category": "permissive",
+          "posture": "allowed",
+          "rule_id": "license:Zlib->permissive",
+          "note": null
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "fast-json",
+      "version": "1.8.0",
+      "purl": null,
+      "supplier": "A. Developer",
+      "author": null,
+      "license_expression": "MIT",
+      "license_source": "concluded",
+      "categories": [
+        "permissive"
+      ],
+      "posture": "allowed",
+      "base_posture": "allowed",
+      "unresolved": false,
+      "unresolved_reason": null,
+      "obligations": [
+        "Retain all copyright notices, licence text, and warranty disclaimers, and reproduce them in your product's third-party notices.",
+        "Attribute the component as its licence requires."
+      ],
+      "rules_applied": [
+        "license:MIT->permissive"
+      ],
+      "explanation": "Resolved SPDX expression 'MIT' (from concluded licence information): MIT classified as permissive (allowed).",
+      "symbols": [
+        {
+          "license_key": "MIT",
+          "known": true,
+          "category": "permissive",
+          "posture": "allowed",
+          "rule_id": "license:MIT->permissive",
+          "note": null
+        }
+      ],
+      "exception": null
+    },
+    {
+      "name": "media-codec",
+      "version": "5.1.2",
+      "purl": "pkg:cargo/media-codec@5.1.2",
+      "supplier": "Codec Project",
+      "author": null,
+      "license_expression": "GPL-2.0-only",
+      "license_source": "concluded",
+      "categories": [
+        "strong_copyleft"
+      ],
+      "posture": "allowed",
+      "base_posture": "blocked",
+      "unresolved": false,
+      "unresolved_reason": null,
+      "obligations": [
+        "Releasing a proprietary product that conveys this component typically requires licensing the whole combined work under the same copyleft licence and providing complete corresponding source.",
+        "To ship proprietary, remove the component, isolate it behind a true arm's-length boundary subject to legal review, or obtain a separate commercial licence."
+      ],
+      "rules_applied": [
+        "license:GPL-2.0-only->strong_copyleft"
+      ],
+      "explanation": "Resolved SPDX expression 'GPL-2.0-only' (from concluded licence information): GPL-2.0-only classified as strong_copyleft (blocked).",
+      "symbols": [
+        {
+          "license_key": "GPL-2.0-only",
+          "known": true,
+          "category": "strong_copyleft",
+          "posture": "blocked",
+          "rule_id": "license:GPL-2.0-only->strong_copyleft",
+          "note": null
+        }
+      ],
+      "exception": {
+        "override_posture": "allowed",
+        "original_posture": "blocked",
+        "justification": "Used only at build time to transcode game assets on the build machine. The GPL-2.0 binary is not linked into, bundled with, or otherwise conveyed in the shipped product, so the conveying obligation is not triggered. Confirmed with the build pipeline owner; re-review if the build process changes.",
+        "owner": "Jordan Counsel <legal@nebula.example>",
+        "date": "2026-05-21"
+      }
+    }
+  ],
+  "unresolved": [
+    {
+      "name": "crash-reporter",
+      "version": "4.4.1",
+      "reason": "licence identifier(s) not recognised as SPDX: LicenseRef-VendorEULA",
+      "posture": "review"
+    },
+    {
+      "name": "telemetry-core",
+      "version": "0.9.7",
+      "reason": "no licence information found",
+      "posture": "review"
+    }
+  ],
+  "obligations": [
+    {
+      "obligation": "Attribute the component as its licence requires.",
+      "components": [
+        "compress-rs 1.1.0",
+        "fast-json 1.8.0"
+      ]
+    },
+    {
+      "obligation": "Identify the actual licence (inspect the package or its source) and re-run, or have counsel review the component before distribution.",
+      "components": [
+        "crash-reporter 4.4.1",
+        "telemetry-core 0.9.7"
+      ]
+    },
+    {
+      "obligation": "Keep the covered component separable and, where the licence requires it, replaceable by the recipient (assess static vs dynamic linking — this tool does not analyse linkage).",
+      "components": [
+        "ui-toolkit 2.0.0"
+      ]
+    },
+    {
+      "obligation": "Make the source of the covered component, including any modifications you made to it, available to recipients.",
+      "components": [
+        "ui-toolkit 2.0.0"
+      ]
+    },
+    {
+      "obligation": "Providing the functionality over a network — including game servers and online services — triggers an obligation to offer complete corresponding source to those users.",
+      "components": [
+        "realtime-sync 3.2.0"
+      ]
+    },
+    {
+      "obligation": "Releasing a proprietary product that conveys this component typically requires licensing the whole combined work under the same copyleft licence and providing complete corresponding source.",
+      "components": [
+        "media-codec 5.1.2"
+      ]
+    },
+    {
+      "obligation": "Retain all copyright notices, licence text, and warranty disclaimers, and reproduce them in your product's third-party notices.",
+      "components": [
+        "compress-rs 1.1.0",
+        "fast-json 1.8.0"
+      ]
+    },
+    {
+      "obligation": "Retain notices and licence text.",
+      "components": [
+        "ui-toolkit 2.0.0"
+      ]
+    },
+    {
+      "obligation": "To ship or operate proprietary, remove the component or obtain a separate commercial licence.",
+      "components": [
+        "realtime-sync 3.2.0"
+      ]
+    },
+    {
+      "obligation": "To ship proprietary, remove the component, isolate it behind a true arm's-length boundary subject to legal review, or obtain a separate commercial licence.",
+      "components": [
+        "media-codec 5.1.2"
+      ]
+    }
+  ],
+  "exceptions_applied": [
+    {
+      "component": "media-codec",
+      "version": "5.1.2",
+      "override_posture": "allowed",
+      "original_posture": "blocked",
+      "justification": "Used only at build time to transcode game assets on the build machine. The GPL-2.0 binary is not linked into, bundled with, or otherwise conveyed in the shipped product, so the conveying obligation is not triggered. Confirmed with the build pipeline owner; re-review if the build process changes.",
+      "owner": "Jordan Counsel <legal@nebula.example>",
+      "date": "2026-05-21"
+    }
+  ],
+  "methodology": [
+    "Each component's licence information is read from the SBOM. Concluded licence information is preferred over declared. Where several licence statements are present without an explicit SPDX expression joining them, they are combined conjunctively (AND), which is the conservative reading.",
+    "Licence identifiers are normalised to SPDX (including resolving deprecated ids), and SPDX expressions are parsed. The expression is then evaluated against the policy: 'A OR B' allows choosing the most permissive option (the best posture wins, as in dual licensing); 'A AND B' requires satisfying every licence (the most restrictive posture wins and obligations accumulate); 'A WITH exception' uses the base licence's posture unless the policy has an explicit rule for the whole expression.",
+    "Anything that cannot be resolved — NOASSERTION, NONE, a non-SPDX or unrecognised identifier, an unparseable expression, an expression containing any unrecognised identifier, or no licence at all — is assigned the policy's conservative default category and is listed separately. Uncertainty never resolves to 'allowed'.",
+    "Every classification records the policy rule that produced it, so each result can be audited. The overall posture is the most restrictive posture among all components.",
+    "Project exceptions are applied after classification. An exception overrides the posture for a named component and version and is recorded, with its justification, owner, and date, in the exceptions section.",
+    "Output is deterministic: components are ordered worst-posture-first and then alphabetically, and no wall-clock timestamp is included."
+  ],
+  "limitations": [
+    "This tool analyses the component set described by the SBOM only; it is no better than the SBOM it is given. It does not detect missing components.",
+    "It does not perform linkage analysis (static vs dynamic). This particularly affects weak-copyleft (e.g. LGPL, MPL) assessment, which is therefore surfaced for review.",
+    "It is not a vulnerability scanner. Vulnerability data, if shown, is taken from the SBOM as-is and is never generated by this tool.",
+    "It does not assert CRA compliance or any certification. It is a readiness and analysis aid only.",
+    "Licence resolution covers SPDX identifiers and expressions. Free-text licence names that are not valid SPDX are treated as unresolved rather than guessed.",
+    "Exceptions match a component name with an exact version (or '*'); version ranges are not supported in this version."
+  ],
+  "disclaimer": "This report is generated automatically by software. It is NOT legal advice and does not create a lawyer-client relationship. The classifications are indicative only, depend entirely on the policy in force at the time of analysis, and may be incomplete or wrong for your specific facts. Licence interpretation depends on how a component is used (including linking, modification, and distribution model), which this tool does not determine. Do not make a distribution decision on the basis of this report alone. Have the results, and any component marked 'allowed', reviewed by qualified legal counsel before distributing your product."
+}
