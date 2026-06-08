@@ -127,6 +127,21 @@ def test_render_all_keys(result) -> None:
     assert outputs == again
 
 
+def test_markdown_renders_exceptions_and_vulnerabilities(result) -> None:
+    md = render_markdown(build_report_data(result, include_vulnerabilities=True))
+    assert "## Exceptions applied" in md
+    assert "agpl-lib" in md
+    assert "isolated" in md
+    assert "Vulnerabilities reported in the SBOM" in md
+    assert "CVE-2024-0001" in md
+
+
+def test_html_renders_vulnerabilities(result) -> None:
+    html = render_html(build_report_data(result, include_vulnerabilities=True))
+    assert "Vulnerabilities reported in the SBOM" in html
+    assert "CVE-2024-0001" in html
+
+
 def test_vulnerabilities_only_when_requested(result) -> None:
     without = build_report_data(result)
     assert "vulnerabilities" not in without

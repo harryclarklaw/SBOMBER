@@ -165,3 +165,31 @@ def test_init_policy_and_exceptions() -> None:
     exceptions = runner.invoke(main, ["init-exceptions"])
     assert exceptions.exit_code == 0
     assert "exceptions:" in exceptions.output
+
+
+def test_init_to_file(tmp_path: Path) -> None:
+    runner = CliRunner()
+    policy_file = tmp_path / "p.yaml"
+    exc_file = tmp_path / "e.yaml"
+    assert runner.invoke(main, ["init-policy", "-o", str(policy_file)]).exit_code == 0
+    assert runner.invoke(main, ["init-exceptions", "-o", str(exc_file)]).exit_code == 0
+    assert "categories:" in policy_file.read_text(encoding="utf-8")
+    assert "exceptions:" in exc_file.read_text(encoding="utf-8")
+    # The written policy and exceptions are valid and usable together.
+    sbom = _write(tmp_path / "clean.cdx.json", CLEAN_SBOM)
+    result = CliRunner().invoke(
+        main,
+        ["analyze", str(sbom), "--policy", str(policy_file), "--print", "json"],
+    )
+    assert result.exit_code == 0
+
+
+def test_include_vulnerabilities_flag(cyclonedx_hardcases_path: Path) -> None:
+    # Without --gate the run succeeds (exit 0) even with blocked components.
+    result = CliRunner().invoke(
+        main,
+        ["analyze", str(cyclonedx_hardcases_path), "--print", "json", "--include-vulnerabilities"],
+    )
+    assert result.exit_code == 0
+    parsed = json.loads(result.output)
+    assert "vulnerabilities" in parsed

@@ -107,3 +107,22 @@ def test_collect_sbom_requires_cargo_toml(tmp_path: Path) -> None:
 def test_collect_sbom_missing_directory() -> None:
     with pytest.raises(EnvironmentToolError, match="not found"):
         collect_sbom("/nonexistent/dir/xyz", tool="cargo-metadata")
+
+
+def test_collect_sbom_unknown_tool(tmp_path: Path) -> None:
+    (tmp_path / "Cargo.toml").write_text("[package]\nname='x'\n", encoding="utf-8")
+    with pytest.raises(EnvironmentToolError, match="Unknown cargo tool"):
+        collect_sbom(tmp_path, tool="cargo-nonsense", runner=lambda a, c: "{}")
+
+
+def test_collect_sbom_auto_falls_back_to_metadata(tmp_path: Path) -> None:
+    # In the test environment cargo-deny is not installed, so auto -> cargo-metadata.
+    (tmp_path / "Cargo.toml").write_text("[package]\nname='x'\n", encoding="utf-8")
+    sbom = collect_sbom(tmp_path, tool="auto", runner=lambda a, c: json.dumps(CARGO_METADATA))
+    assert sbom.sbom_format == "cargo-metadata"
+
+
+def test_collect_sbom_invalid_json(tmp_path: Path) -> None:
+    (tmp_path / "Cargo.toml").write_text("[package]\nname='x'\n", encoding="utf-8")
+    with pytest.raises(EnvironmentToolError, match="parse cargo metadata"):
+        collect_sbom(tmp_path, tool="cargo-metadata", runner=lambda a, c: "{not json")
