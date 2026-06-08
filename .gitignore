@@ -27,3 +27,6 @@ coverage.xml
 # Tool output written by ad-hoc runs (committed example reports live under examples/)
 /sbom-counsel-report/
 /scratch/
+
+# Web app: the wheel is built next to index.html by web/build.sh or CI, not committed.
+/web/*.whl

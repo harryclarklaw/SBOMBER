@@ -106,6 +106,44 @@ The generated [`examples/reports/report.md`](examples/reports/report.md) and
 `report.html` show the output for a project that mixes permissive, copyleft,
 custom, and unresolved components, with one audited exception.
 
+## Web app (no terminal required)
+
+For non-technical users — the lawyer or general counsel who will read the report —
+there is a browser front-end in [`web/`](web/): drag in an SBOM, get the same
+report with an interactive, filterable table and one-click downloads.
+
+It runs the **same engine entirely in the browser** (compiled to WebAssembly via
+Pyodide), so **the SBOM is never uploaded** — it is read and analysed locally on
+the user's machine. That matters for a confidential dependency manifest, and it
+means the web verdict is identical to the CLI and CI verdict (one auditable
+engine, not a re-implementation).
+
+Preview it locally:
+
+```
+./web/build.sh                       # builds the engine into web/
+python -m http.server -d web 8000    # serve over http (not file://)
+# open http://localhost:8000/
+```
+
+It deploys to GitHub Pages automatically on push to `main` (see
+`.github/workflows/pages.yml`); enable Pages for the repository to host it. See
+[`web/README.md`](web/README.md) for details.
+
+## Generating an SBOM
+
+If you don't already have an SBOM, generate one from a project with
+[Syft](https://github.com/anchore/syft) and let the tool drive it in one step:
+
+```
+sbom-counsel scan path/to/project        # requires Syft on PATH
+```
+
+`scan` runs Syft to produce the SBOM, then analyses it with the same pipeline as
+`analyze`. This is an optional convenience; the SBOM path remains primary. For
+Rust specifically, `sbom-counsel cargo path/to/project` uses cargo directly (see
+[Rust convenience path](#rust-convenience-path)).
+
 ## Outputs
 
 By default, `analyze` writes five files to the output directory:

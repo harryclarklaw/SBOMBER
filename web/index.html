@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sbom-counsel — open-source licence risk, in your browser</title>
+<meta name="description" content="Drag in a CycloneDX or SPDX SBOM and get a lawyer-readable open-source licence risk report. Runs entirely in your browser; your file is never uploaded.">
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <h1>sbom-counsel</h1>
+    <p class="tagline">Open-source licence-risk analysis for software bills of materials — in your browser.</p>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <div class="privacy">
+    <span>🔒</span>
+    <div><strong>Your file never leaves your computer.</strong>
+    This page runs the entire analysis locally in your browser. Nothing is uploaded to any server.</div>
+  </div>
+
+  <!-- Upload -->
+  <section id="intake">
+    <div id="dropzone" class="dropzone" tabindex="0" role="button" aria-label="Upload an SBOM file">
+      <h3>Drop an SBOM file here</h3>
+      <p class="or">or</p>
+      <button class="button" id="pickBtn" type="button" disabled>Choose a file…</button>
+      <input type="file" id="fileInput" accept=".json,application/json" hidden>
+      <p class="small muted" style="margin-top:.8rem">Accepts CycloneDX or SPDX in JSON form.</p>
+    </div>
+
+    <div class="controls">
+      <label class="toggle"><input type="checkbox" id="strict"> Treat unknown / unresolved licences as <b>&nbsp;blocked</b> (strict)</label>
+    </div>
+
+    <div class="samples small muted">
+      No SBOM to hand? Try a sample:
+      <button class="button secondary" id="sampleClean" type="button" disabled>Clean project</button>
+      <button class="button secondary" id="sampleMixed" type="button" disabled>Mixed project</button>
+      &nbsp;· Don’t have an SBOM at all? Generate one with
+      <a href="https://github.com/anchore/syft" target="_blank" rel="noopener">Syft</a>
+      or the <span class="mono">sbom-counsel scan</span> command, then drop it here.
+    </div>
+  </section>
+
+  <div id="status"></div>
+
+  <!-- Results -->
+  <section id="results" class="hidden">
+    <div id="verdict" class="verdict"></div>
+    <p id="interp" class="muted"></p>
+    <div id="chips" class="chips"></div>
+
+    <div class="downloads" id="downloads"></div>
+
+    <h2>Risk register</h2>
+    <div class="filterbar">
+      <input type="search" id="search" placeholder="Search component or licence…">
+      <button class="pill active" data-posture="all">All</button>
+      <button class="pill" data-posture="blocked">Blocked</button>
+      <button class="pill" data-posture="review">Review</button>
+      <button class="pill" data-posture="allowed">Allowed</button>
+    </div>
+    <table id="register">
+      <thead>
+        <tr><th>Component</th><th>Version</th><th>Licence</th><th>Category</th><th>Posture</th></tr>
+      </thead>
+      <tbody id="registerBody"></tbody>
+    </table>
+    <p class="small muted">Click any row to see why it was classified that way.</p>
+
+    <div id="unresolvedWrap"></div>
+    <div id="obligationsWrap"></div>
+    <div id="exceptionsWrap"></div>
+    <div id="vulnWrap"></div>
+
+    <h2>How this was decided</h2>
+    <details class="acc"><summary>Methodology</summary><div id="methodology"></div></details>
+    <details class="acc"><summary>Known limitations</summary><div id="limitations"></div></details>
+    <details class="acc"><summary>Disclaimer</summary><p id="disclaimer"></p></details>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p id="footerNote">Powered by the sbom-counsel engine running locally via Pyodide (WebAssembly).
+    The verdict here is identical to the command-line tool — one auditable engine.</p>
+    <p>Not legal advice. Classifications are automated and indicative, depend on the policy in force,
+    and must be reviewed by qualified legal counsel before any distribution decision.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script src="./samples.js"></script>
+<script src="./app.js"></script>
+</body>
+</html>

@@ -6,6 +6,16 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
 
+### Added
+
+- A browser web app (`web/`) for non-technical users: drag-and-drop an SBOM and
+  get the interactive report. It runs the same engine entirely client-side via
+  Pyodide, so the SBOM is never uploaded, and deploys to GitHub Pages.
+- `webapi.analyze_text()` / `analyze_text_json()`: a single embedding entry point
+  that returns report data and all rendered formats, with errors returned as data.
+- `sbom-counsel scan <target>`: optional convenience that generates an SBOM from a
+  project with Syft and analyses it, alongside the existing `cargo` path.
+
 ## [0.1.0] - 2026-06-08
 
 Initial release.
