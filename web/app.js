@@ -86,8 +86,9 @@ async function analyze(text, filename) {
   status("Analysing…", "loading");
   try {
     const strict = $("#strict").checked;
-    const fn = pyodide.globals.get("_w").analyze_text_json;
-    const resultJson = fn(text, {
+    // Pyodide passes JS objects as positional args, so use callKwargs() to send
+    // the options through as Python keyword arguments (not a 2nd positional arg).
+    const resultJson = pyodide.globals.get("_w").analyze_text_json.callKwargs(text, {
       strict_unresolved: strict,
       filename: filename || null,
       include_vulnerabilities: true,
