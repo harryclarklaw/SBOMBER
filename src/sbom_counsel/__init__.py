@@ -33,6 +33,7 @@ from .policy import (  # noqa: E402
     load_policy,
 )
 from .report import build_report_data, render_all  # noqa: E402
+from .webapi import analyze_text, analyze_text_json  # noqa: E402
 
 __all__ = [
     "APP_NAME",
@@ -42,6 +43,8 @@ __all__ = [
     "Sbom",
     "__version__",
     "analyze",
+    "analyze_text",
+    "analyze_text_json",
     "build_report_data",
     "classify_component",
     "load_default_policy",

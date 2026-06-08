@@ -16,11 +16,12 @@ from typing import Any
 import click
 
 from . import APP_NAME, APP_TAGLINE, __version__
+from . import acquire as acquire_mod
 from . import cargo as cargo_mod
 from .classify import analyze
 from .errors import ExitCode, SbomCounselError
 from .ingest import load_sbom
-from .models import AnalysisResult, Posture
+from .models import AnalysisResult, Posture, Sbom
 from .policy import (
     Policy,
     default_policy_text,
@@ -196,6 +197,42 @@ def _emit(
     return int(ExitCode.GATE_FAILED) if result.gate_failed else int(ExitCode.SUCCESS)
 
 
+def _run_pipeline(
+    sbom: Sbom,
+    *,
+    policy_path: Path | None,
+    exceptions_path: Path | None,
+    output_dir: Path,
+    formats: tuple[str, ...],
+    print_format: str | None,
+    gate: bool,
+    fail_on: str,
+    strict_unresolved: bool,
+    include_vulnerabilities: bool,
+    quiet: bool,
+) -> None:
+    """Classify a normalised SBOM, write/print outputs, and exit with the code."""
+    policy = _load_policy(policy_path, strict_unresolved=strict_unresolved)
+    exceptions = load_exceptions(exceptions_path) if exceptions_path is not None else None
+    result = analyze(
+        sbom,
+        policy,
+        exceptions,
+        tool_name=APP_NAME,
+        tool_version=__version__,
+        gate_fail_on=_gate_fail_on(gate, fail_on),
+    )
+    code = _emit(
+        result,
+        output_dir=output_dir,
+        formats=formats,
+        include_vulnerabilities=include_vulnerabilities,
+        print_format=print_format,
+        quiet=quiet,
+    )
+    raise SystemExit(code)
+
+
 # --- Shared options ----------------------------------------------------------
 
 
@@ -301,26 +338,19 @@ def analyze_cmd(
     quiet: bool,
     traceback: bool,
 ) -> None:
-    sbom = load_sbom(sbom_path)
-    policy = _load_policy(policy_path, strict_unresolved=strict_unresolved)
-    exceptions = load_exceptions(exceptions_path) if exceptions_path is not None else None
-    result = analyze(
-        sbom,
-        policy,
-        exceptions,
-        tool_name=APP_NAME,
-        tool_version=__version__,
-        gate_fail_on=_gate_fail_on(gate, fail_on),
-    )
-    code = _emit(
-        result,
+    _run_pipeline(
+        load_sbom(sbom_path),
+        policy_path=policy_path,
+        exceptions_path=exceptions_path,
         output_dir=output_dir,
         formats=formats,
-        include_vulnerabilities=include_vulnerabilities,
         print_format=print_format,
+        gate=gate,
+        fail_on=fail_on,
+        strict_unresolved=strict_unresolved,
+        include_vulnerabilities=include_vulnerabilities,
         quiet=quiet,
     )
-    raise SystemExit(code)
 
 
 @main.command(name="cargo", help="Convenience: analyse a Rust project via cargo tooling.")
@@ -349,26 +379,55 @@ def cargo_cmd(
     quiet: bool,
     traceback: bool,
 ) -> None:
-    sbom = cargo_mod.collect_sbom(project_dir, tool=tool)
-    policy = _load_policy(policy_path, strict_unresolved=strict_unresolved)
-    exceptions = load_exceptions(exceptions_path) if exceptions_path is not None else None
-    result = analyze(
-        sbom,
-        policy,
-        exceptions,
-        tool_name=APP_NAME,
-        tool_version=__version__,
-        gate_fail_on=_gate_fail_on(gate, fail_on),
-    )
-    code = _emit(
-        result,
+    _run_pipeline(
+        cargo_mod.collect_sbom(project_dir, tool=tool),
+        policy_path=policy_path,
+        exceptions_path=exceptions_path,
         output_dir=output_dir,
         formats=formats,
-        include_vulnerabilities=include_vulnerabilities,
         print_format=print_format,
+        gate=gate,
+        fail_on=fail_on,
+        strict_unresolved=strict_unresolved,
+        include_vulnerabilities=include_vulnerabilities,
         quiet=quiet,
     )
-    raise SystemExit(code)
+
+
+@main.command(
+    name="scan",
+    help="Convenience: generate an SBOM from a project with Syft, then analyse it.",
+)
+@click.argument("target", type=click.Path(path_type=Path))
+@_analysis_options
+@_handle_errors
+def scan_cmd(
+    target: Path,
+    policy_path: Path | None,
+    exceptions_path: Path | None,
+    output_dir: Path,
+    formats: tuple[str, ...],
+    print_format: str | None,
+    gate: bool,
+    fail_on: str,
+    strict_unresolved: bool,
+    include_vulnerabilities: bool,
+    quiet: bool,
+    traceback: bool,
+) -> None:
+    _run_pipeline(
+        acquire_mod.sbom_from_syft(target),
+        policy_path=policy_path,
+        exceptions_path=exceptions_path,
+        output_dir=output_dir,
+        formats=formats,
+        print_format=print_format,
+        gate=gate,
+        fail_on=fail_on,
+        strict_unresolved=strict_unresolved,
+        include_vulnerabilities=include_vulnerabilities,
+        quiet=quiet,
+    )
 
 
 @main.command(name="init-policy", help="Write the default policy to stdout (or a file).")

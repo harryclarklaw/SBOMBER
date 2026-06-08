@@ -19,41 +19,14 @@ from __future__ import annotations
 
 import json
 import shutil
-import subprocess
-from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+from ._subprocess import Runner, run_tool
 from .errors import EnvironmentToolError
 from .models import Component, LicenseFinding, Sbom
 
-# A runner takes (args, cwd) and returns captured stdout, or raises.
-Runner = Callable[[list[str], Path], str]
-
-
-def _default_runner(args: list[str], cwd: Path) -> str:
-    executable = args[0]
-    if shutil.which(executable) is None:
-        raise EnvironmentToolError(
-            f"Required tool '{executable}' was not found on PATH.",
-            hint=f"Install {executable}, or use the SBOM path (analyze) instead.",
-        )
-    try:
-        completed = subprocess.run(
-            args,
-            cwd=str(cwd),
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-    except OSError as exc:  # pragma: no cover - environment dependent
-        raise EnvironmentToolError(f"Could not run {' '.join(args)}: {exc}") from exc
-    if completed.returncode != 0:
-        detail = completed.stderr.strip() or completed.stdout.strip() or "no output"
-        raise EnvironmentToolError(
-            f"{' '.join(args)} failed (exit {completed.returncode}): {detail}",
-        )
-    return completed.stdout
+_default_runner: Runner = run_tool
 
 
 def _authors_to_str(authors: Any) -> str | None:

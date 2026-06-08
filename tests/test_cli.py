@@ -157,6 +157,18 @@ def test_exceptions_applied_via_cli(cyclonedx_hardcases_path: Path, tmp_path: Pa
     assert parsed["summary"]["counts"]["exceptions_applied"] == 1
 
 
+def test_scan_command(monkeypatch, tmp_path: Path) -> None:
+    # The scan command shells out to Syft; replace that with a known SBOM.
+    from sbom_counsel import acquire, ingest
+
+    sbom = ingest.parse_sbom(CLEAN_SBOM, "syft:demo")
+    monkeypatch.setattr(acquire, "sbom_from_syft", lambda target: sbom)
+    result = CliRunner().invoke(main, ["scan", str(tmp_path), "--print", "json"])
+    assert result.exit_code == 0
+    parsed = json.loads(result.output)
+    assert parsed["summary"]["overall_posture"] == "allowed"
+
+
 def test_init_policy_and_exceptions() -> None:
     runner = CliRunner()
     policy = runner.invoke(main, ["init-policy"])
